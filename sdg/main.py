@@ -26,7 +26,7 @@ simulation_app = SimulationApp(launch_config=CONFIG)
 
 
 ## This is the path which has the background scene in which objects will be added.
-ENV_URL = "/Isaac/Environments/_"
+ENV_URL = "/Isaac/Environments/_" # TODO: Agian script batekin, bestela asset bat sortu ta erabili
 
 import carb
 import omni
@@ -55,14 +55,40 @@ SMALL_PINES = [
     "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Vegetation/Trees/Italian_Cypress.usd",
     "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Vegetation/Trees/Chinese_Juniper.usd"
 ]
-OTHER_TREES = [
-
+OTHER_PLUS_6M_TREES = [
+    "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Vegetation/Trees/American_Beech.usd",
+    "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Vegetation/Trees/Black_Oak.usd",
+    "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Vegetation/Trees/Black_Oak_Fall.usd",
+    "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Vegetation/Trees/Common_Apple.usd",
+    "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Vegetation/Trees/Hawthorn.usd",
+    "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Vegetation/Trees/Honey_Locust.usd",
+    "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Vegetation/Trees/Honey_Locust_Fall.usd",
+    "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Vegetation/Trees/Largetooth_Aspen.usd",
+    "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Vegetation/Trees/Lombardy_Poplar.usd",
+    "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Vegetation/Trees/Lombardy_Poplar_Fall.usd",
+    "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Vegetation/Trees/Red_Ash.usd",
+    "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Vegetation/Trees/Red_Ash_Fall.usd",
+    "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Vegetation/Trees/Red_Maple.usd",
+    "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Vegetation/Trees/Red_Oak.usd",
+    "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Vegetation/Trees/Scarlet_Oak.usd",
+    "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Vegetation/Trees/Scarlet_Oak_fall.usd",
+    "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Vegetation/Trees/Service_Berry.usd",
+    "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Vegetation/Trees/Shumard_Oak.usd",
+    "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Vegetation/Trees/Shumard_Oak_Fall.usd",
+    "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Vegetation/Trees/Siberian_Crab_Apple.usd",
+    "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Vegetation/Trees/Sugar_Maple.usd",
+    "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Vegetation/Trees/Sycamore.usd",
+    "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Vegetation/Trees/White_Ash.usd"
 ]
+
 NESTS = []
-ENV_OBJECTS = [] # Harriak, sasiak, enborrak, ¿beste zuhaitzak?
-DISTRACTORS = [
+TEMP_NESTS = [
     "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/5.1/Isaac/Props/Shapes/sphere.usd",
-    
+    "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/ArchVis/Residential/Decor/Sculptures/SpeakNoEvil_Skull.usd",
+    "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/ArchVis/Residential/Entertainment/Games/Solid_Marble.usd"
+]
+
+DISTRACTORS = [
     "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Vegetation/Debris/maplefall1.usd",
     "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Vegetation/Debris/oakfall1.usd",
     "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Vegetation/Debris/oakfall2.usd",
@@ -72,9 +98,7 @@ DISTRACTORS = [
     "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/ArchVis/Residential/Decor/Tchotchkes/Orange_01.usd",
     "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/ArchVis/Residential/Decor/Tchotchkes/Orange_02.usd",
     "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/ArchVis/Residential/Decor/Tchotchkes/Orange_03.usd"
-    "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/ArchVis/Residential/Food/Vegetables/RedOnion.usd",
-    "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/ArchVis/Residential/Decor/Sculptures/SpeakNoEvil_Skull.usd",
-    "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/ArchVis/Residential/Entertainment/Games/Solid_Marble.usd"
+    "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/ArchVis/Residential/Food/Vegetables/RedOnion.usd"
 ] # Piñuak, plastiko boltsak, txoriak, txori kabiak,
 
 TRASH = [
@@ -106,6 +130,10 @@ GRASS = [
     "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Vegetation/Shrub/Grass_Trimmed_B.usd",
     "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Vegetation/Shrub/Grass_Trimmed_C.usd"
 ]
+
+ENV_OBJECTS = [
+
+] # Harriak, sasiak, enborrak
 
 
 # TODO: Distractor talde bakarra o zuhaitzentzat bat ta lurreako beste bat?
