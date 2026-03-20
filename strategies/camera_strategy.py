@@ -10,8 +10,8 @@ class CameraStrategy(ABC):
 class FixedCameraStrategy(CameraStrategy):
     def create_camera(self):
         return rep.create.camera(
-            position=(0, -8, 3),
-            look_at=(0, 0, 2),
+            position=(0, -12, 6),
+            look_at=(0, 0, 3),
             clipping_range=(0.1, 10000),
         )
     

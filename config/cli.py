@@ -11,7 +11,7 @@ def parse_args():
     # parser.add_argument("--distractors", type=str, default="warehouse", help="Options are 'warehouse' (default), 'additional' or None")
     parser.add_argument("--data_dir", type=str, default=os.getcwd() + "/_tp_nest_data", help="Location where data will be output")
     parser.add_argument("--camera_mode", type=str, default="fixed")
-    parser.add_argument("--writer_type", type=str, default="basic")
+    parser.add_argument("--writer_type", type=str, default="none")
     parser.add_argument("--warmup_steps", type=int, default=100)
     parser.add_argument("--rt_subframes", type=int, default=1)
     parser.add_argument("--renderer", type=str, default="RayTracedLighting")

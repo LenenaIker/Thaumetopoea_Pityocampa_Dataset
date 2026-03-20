@@ -47,6 +47,22 @@ class DatasetGenerator:
             )
             writer.attach([render_product])
 
+
+
+            target = rep.create.from_usd(
+                "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/5.1/Isaac/Props/Shapes/sphere.usd",
+                semantics=[("class", self.settings.dataset.target_class)],
+                count=1
+            )
+
+            # Posición fija visible
+            with target:
+                rep.modify.pose(
+                    position=(0, 0, 3),
+                    scale=(0.5, 0.5, 0.5)
+                )
+
+
             with rep.trigger.on_frame(num_frames=self.settings.render.num_frames):
                 pass
 

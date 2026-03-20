@@ -4,14 +4,15 @@ from strategies.camera_strategy import (
     RandomCameraStrategy,
 )
 
-
 class CameraFactory:
+    _registry = {
+        "fixed": FixedCameraStrategy,
+        "random": RandomCameraStrategy,
+        "drone": DroneCameraStrategy,
+    }
+
     def create(self, mode: str):
-        if mode == "drone":
-            return DroneCameraStrategy()
-        elif mode == "random":
-            return RandomCameraStrategy()
-        elif mode == "fixed":
-            return FixedCameraStrategy()
-        else:
+        try:
+            return self._registry[mode.lower()]()
+        except KeyError:
             raise ValueError(f"Unknown camera mode: {mode}")
