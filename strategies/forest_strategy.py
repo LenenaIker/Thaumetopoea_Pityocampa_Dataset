@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 class RandomizationStrategy(ABC):
     @abstractmethod
     def apply(self, context) -> None:
-        pass
+        raise NotImplementedError
 
 
 class ForestRandomizationStrategy(RandomizationStrategy):

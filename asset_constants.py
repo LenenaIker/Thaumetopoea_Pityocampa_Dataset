@@ -1,10 +1,18 @@
 
-FOREST_01 = "assets/scenes/forest_01.usd"
+from pathlib import Path
+
+PROJECT_ROOT = Path(__file__).resolve().parent
+ASSETS_DIR = PROJECT_ROOT / "assets"
+SCENES_DIR = ASSETS_DIR / "scenes"
+
+
+FOREST_01 = str((SCENES_DIR / "forest_01.usd").resolve())
+
 
 PINES = [
     "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Vegetation/Trees/Yellow_Pine.usd",
     "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Vegetation/Trees/Douglas_Fir.usd",
-    "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Vegetation/Trees/Eastern_Hemlock.usd"
+    "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Vegetation/Trees/Eastern_Hemlock.usd",
     "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Vegetation/Trees/Norway_Spruce.usd"
 ]
 
@@ -57,7 +65,7 @@ NEST_DISTRACTORS = [
     "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/ArchVis/Residential/Food/Fruit/Avocado01.usd",
     "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/ArchVis/Residential/Decor/Tchotchkes/Orange_01.usd",
     "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/ArchVis/Residential/Decor/Tchotchkes/Orange_02.usd",
-    "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/ArchVis/Residential/Decor/Tchotchkes/Orange_03.usd"
+    "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/ArchVis/Residential/Decor/Tchotchkes/Orange_03.usd",
     "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/ArchVis/Residential/Food/Vegetables/RedOnion.usd"
 ] # Piñuak, plastiko boltsak, txoriak, txori kabiak,
 

@@ -1,21 +1,28 @@
 from abc import ABC, abstractmethod
-from pathlib import Path
+
+import omni.replicator.core as rep
 
 
 class WriterStrategy(ABC):
     @abstractmethod
-    def initialize(self, rep, output_dir: Path):
-        pass
+    def initialize(self, output_dir: str):
+        raise NotImplementedError
 
 
 class KittiWriterStrategy(WriterStrategy):
-    def initialize(self, rep, output_dir: Path):
+    def initialize(self, output_dir: str):
         writer = rep.WriterRegistry.get("KittiWriter")
-        writer.initialize(output_dir=str(output_dir), omit_semantic_type=True)
+        writer.initialize(output_dir=output_dir, omit_semantic_type=True)
         return writer
     
 class CocoWriterStrategy(WriterStrategy):
-    def initialize(self, rep, output_dir: Path):
+    def initialize(self, output_dir: str):
         writer = rep.WriterRegistry.get("CocoWriter")
-        writer.initialize(output_dir=str(output_dir), omit_semantic_type=True)
+        writer.initialize(output_dir=output_dir, omit_semantic_type=True)
+        return writer
+    
+class BasicRgbWriterStrategy(WriterStrategy):
+    def initialize(self, output_dir: str):
+        writer = rep.WriterRegistry.get("BasicWriter")
+        writer.initialize(output_dir=output_dir, rgb=True)
         return writer
