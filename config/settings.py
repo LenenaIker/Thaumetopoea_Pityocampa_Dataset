@@ -1,13 +1,12 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field, fields
 from pathlib import Path
-
 
 @dataclass
 class RenderSettings:
-    width: int
-    height: int
-    num_frames: int
-    headless: bool
+    width: int = 960
+    height: int = 544
+    num_frames: int = 1000
+    headless: bool = False
     renderer: str = "RayTracedLighting"
     rt_subframes: int = 1
 
@@ -19,50 +18,46 @@ class RenderSettings:
             "renderer": self.renderer,
         }
 
-
 @dataclass
 class DatasetSettings:
-    output_dir: Path
+    output_dir: Path = field(default_factory = lambda: Path.cwd() / "_tp_output")
     warmup_steps: int = 100
     target_class: str = "nest"
-
 
 @dataclass
 class GenerationSettings:
     distractor_type: str = "forest"
-    writer_type: str = "basic" # basic | coco | kitti
-    camera_mode: str = "fixed" # fixed | random | drone
-
+    writer_type: str = "basic"
+    camera_mode: str = "fixed"
 
 
 @dataclass
 class Settings:
-    render: RenderSettings
-    dataset: DatasetSettings
-    generation: GenerationSettings
+    render: RenderSettings = field(default_factory = RenderSettings)
+    dataset: DatasetSettings = field(default_factory = DatasetSettings)
+    generation: GenerationSettings = field(default_factory = GenerationSettings)
 
     def to_launch_config(self) -> dict:
         return self.render.to_launch_config()
 
 
+
+def pick(dataclass_type, values: dict) -> dict:
+    valid_names = {f.name for f in fields(dataclass_type)}
+    return {
+        k: v
+        for k, v in values.items()
+        if k in valid_names and v is not None
+    }
+
 def build_settings(args) -> Settings:
+    raw = vars(args).copy()
+
+    if raw.get("data_dir") is not None:
+        raw["output_dir"] = Path(raw.pop("data_dir")).expanduser().resolve()
+
     return Settings(
-        render=RenderSettings(
-            width=args.width,
-            height=args.height,
-            num_frames=args.num_frames,
-            headless=args.headless,
-            renderer=getattr(args, "renderer", "RayTracedLighting"),
-            rt_subframes=getattr(args, "rt_subframes", 1),
-        ),
-        dataset=DatasetSettings(
-            output_dir=Path(args.data_dir).expanduser().resolve(),
-            warmup_steps=getattr(args, "warmup_steps", 100),
-            target_class=getattr(args, "target_class", "nest"),
-        ),
-        generation=GenerationSettings(
-            distractor_type=getattr(args, "distractor_type", "forest"),
-            writer_type=getattr(args, "writer_type", "basic"),
-            camera_mode=getattr(args, "camera_mode", "fixed"),
-        ),
+        render = RenderSettings(**pick(RenderSettings, raw)),
+        dataset = DatasetSettings(**pick(DatasetSettings, raw)),
+        generation = GenerationSettings(**pick(GenerationSettings, raw)),
     )
