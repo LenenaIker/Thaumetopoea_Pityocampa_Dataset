@@ -29,3 +29,6 @@ class RandomCameraStrategy(CameraStrategy):
 class DroneCameraStrategy(CameraStrategy):
     def create_camera(self):
         return rep.create.camera(position=(0, -20, 10), look_at=(0, 0, 5))
+    
+
+# TODO: rep.create.stereo_camera() --> Teniendo en cuenta que el dron va a tener que medir profundidad...

@@ -8,10 +8,11 @@ class AssetFactory:
     def create_targets(self, semantic_class: str):
         objs = [
             rep.create.from_usd(path, semantics=[("class", semantic_class)], count=1)
-            for path in self.catalog.target_assets
+            for path in self.catalog.nest_assets
         ]
+        
         return rep.create.group(objs)
 
-    def create_distractors(self, rep):
+    def create_distractors(self):
         objs = [rep.create.from_usd(path, count=1) for path in self.catalog.distractor_assets]
         return rep.create.group(objs)

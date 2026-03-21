@@ -1,17 +1,25 @@
+from config.settings import Settings
+
+from strategies.camera_strategy import CameraStrategy
+from strategies.writer_strategy import WriterStrategy
+
+import random
 import omni.replicator.core as rep
 from pathlib import Path
-from config.settings import Settings
+
 
 class DatasetGenerator:
     def __init__(
         self,
         app,
         settings: Settings,
-        scene_path,
-        camera_strategy,
-        writer_strategy,
+        scene_path: str | Path,
+        camera_strategy: CameraStrategy,
+        writer_strategy: WriterStrategy,
         orchestrator_runner,
-        stage_loader
+        stage_loader,
+        target_spawner,
+        target_placer
     ):
         self.app = app
         self.settings = settings
@@ -21,6 +29,9 @@ class DatasetGenerator:
         self.writer_strategy = writer_strategy
         self.orchestrator_runner = orchestrator_runner
         self.stage_loader = stage_loader
+        self.target_spawner = target_spawner
+        self.target_placer = target_placer
+        
 
     def run(self):
         output_dir = Path(self.settings.dataset.output_dir)
@@ -33,13 +44,14 @@ class DatasetGenerator:
             self.app.update()
 
 
-        with rep.new_layer():
+        with rep.new_layer(name = "Replicator_layer"):
 
             camera = self.camera_strategy.create_camera()
 
             render_product = rep.create.render_product(
-                camera,
-                (self.settings.render.width, self.settings.render.height)
+                name = "CameraRenderProduct",
+                camera = camera,
+                resolution = (self.settings.render.width, self.settings.render.height)
             )
 
             writer = self.writer_strategy.initialize(
@@ -48,22 +60,22 @@ class DatasetGenerator:
             writer.attach([render_product])
 
 
+            # TODO: Es más barato rep.create.sphere()?
+            # TODO: Si uso rep.create.from_dir(), ¿puedo declarar todos los distractors a la vez?
+            # TODO: ¿rep.distribution.choice() puede servirme para seleccionar los pinos donde generar nidos aleatoriamente?
 
-            target = rep.create.from_usd(
-                "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/5.1/Isaac/Props/Shapes/sphere.usd",
-                semantics=[("class", self.settings.dataset.target_class)],
-                count=1
+            
+
+            num_targets = random.randint(
+                self.settings.dataset.min_targets_per_frame,
+                self.settings.dataset.max_targets_per_frame,
             )
-
-            # Posición fija visible
-            with target:
-                rep.modify.pose(
-                    position=(0, 0, 3),
-                    scale=(0.5, 0.5, 0.5)
-                )
+            targets = self.target_spawner.spawn(num_targets)
+            self.target_placer.place(targets)
 
 
-            with rep.trigger.on_frame(num_frames=self.settings.render.num_frames):
+
+            with rep.trigger.on_frame(num_frames = self.settings.render.num_frames):
                 pass
 
 

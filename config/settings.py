@@ -23,11 +23,13 @@ class DatasetSettings:
     output_dir: Path = field(default_factory = lambda: Path.cwd() / "_tp_output")
     warmup_steps: int = 100
     target_class: str = "nest"
+    min_targets_per_frame: int = 1
+    max_targets_per_frame: int = 5
 
 @dataclass
 class GenerationSettings:
     distractor_type: str = "forest"
-    writer_type: str = "basic"
+    writer_type: str = "none"
     camera_mode: str = "fixed"
 
 

@@ -16,6 +16,8 @@ def parse_args():
     parser.add_argument("--renderer", type=str)
     parser.add_argument("--target_class", type=str)
     parser.add_argument("--distractor_type", type=str)
+    parser.add_argument("--min_targets_per_frame", type=int)
+    parser.add_argument("--max_targets_per_frame", type=int)
 
     args, unknown_args = parser.parse_known_args()
     print("Unknown args:\n", unknown_args)
