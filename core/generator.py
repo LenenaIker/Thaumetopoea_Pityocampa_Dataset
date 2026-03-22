@@ -3,6 +3,8 @@ from config.settings import Settings
 from strategies.camera_strategy import CameraStrategy
 from strategies.writer_strategy import WriterStrategy
 
+from services.nest_placer import NestOnPinePlacer
+
 import random
 import omni.replicator.core as rep
 from pathlib import Path
@@ -18,8 +20,10 @@ class DatasetGenerator:
         writer_strategy: WriterStrategy,
         orchestrator_runner,
         stage_loader,
-        target_spawner,
-        target_placer
+        pine_spawner,
+        pine_placer,
+        nest_spawner
+        # nest_placer
     ):
         self.app = app
         self.settings = settings
@@ -27,11 +31,14 @@ class DatasetGenerator:
 
         self.camera_strategy = camera_strategy
         self.writer_strategy = writer_strategy
+        
         self.orchestrator_runner = orchestrator_runner
         self.stage_loader = stage_loader
-        self.target_spawner = target_spawner
-        self.target_placer = target_placer
-        
+
+        self.pine_spawner = pine_spawner
+        self.pine_placer = pine_placer
+        self.nest_spawner = nest_spawner
+        # self.nest_placer = nest_placer
 
     def run(self):
         output_dir = Path(self.settings.dataset.output_dir)
@@ -65,14 +72,19 @@ class DatasetGenerator:
             # TODO: ¿rep.distribution.choice() puede servirme para seleccionar los pinos donde generar nidos aleatoriamente?
 
             
+            num_pines = 5 #random.randint(5, 10)
+            pines = self.pine_spawner.spawn(num_pines)
+            self.pine_placer.place(pines)
 
-            num_targets = random.randint(
-                self.settings.dataset.min_targets_per_frame,
-                self.settings.dataset.max_targets_per_frame,
-            )
-            targets = self.target_spawner.spawn(num_targets)
-            self.target_placer.place(targets)
+            for pine in pines:
+                profile = pine.definition.placement_profile
+                num_nests = random.randint(1, profile.max_nests)
 
+                placer = NestOnPinePlacer(placement_profile = profile)
+
+                for _ in range(num_nests):
+                    nest = self.nest_spawner.spawn_one()
+                    placer.place_one(nest, pine)
 
 
             with rep.trigger.on_frame(num_frames = self.settings.render.num_frames):

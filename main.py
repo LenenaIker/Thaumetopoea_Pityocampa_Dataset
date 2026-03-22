@@ -4,8 +4,12 @@ from omni.isaac.kit import SimulationApp
 from config.cli import parse_args
 from config.settings import build_settings
 
+# import traceback
+# import faulthandler
 
 def main():
+    # faulthandler.enable()
+
     settings = build_settings(args = parse_args())
 
     app = SimulationApp(launch_config = settings.to_launch_config())
@@ -16,6 +20,10 @@ def main():
 
         generator = build_forest_base_generator(settings = settings, app = app)
         generator.run()
+    
+    # except Exception:    
+    #     traceback.print_exc()
+
     finally:
         app.close()
 

@@ -1,5 +1,5 @@
 from pathlib import Path
-from omni.isaac.core.utils.stage import open_stage, get_current_stage
+from isaacsim.core.utils.stage import open_stage, get_current_stage
 
 def load_stage(stage_path: str | Path): # Dokumentazioan: str | Path | usdrt.Sdf.Path
     print(f"Loading stage: {stage_path}")

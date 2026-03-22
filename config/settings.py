@@ -21,7 +21,7 @@ class RenderSettings:
 @dataclass
 class DatasetSettings:
     output_dir: Path = field(default_factory = lambda: Path.cwd() / "_tp_output")
-    warmup_steps: int = 100
+    warmup_steps: int = 150
     target_class: str = "nest"
     min_targets_per_frame: int = 1
     max_targets_per_frame: int = 5

@@ -5,7 +5,7 @@ from factories.camera_factory import CameraFactory
 from factories.writer_factory import WriterFactory
 
 from services.target_spawner import TargetSpawner
-from services.ring_target_placer import RingTargetPlacer
+from services.temp_placers import RingTargetPlacer, DiscreteZonePlacer
 
 from core.orchestrator import run_orchestrator
 from core.stage import load_stage
@@ -13,20 +13,61 @@ from core.stage import load_stage
 
 from asset_constants import FOREST_01, TEMP_NESTS
 
+from models.pine_models import PineDefinition
+from models.nest_models import NestPlacementProfile
+
+from asset_constants import PINES, SMALL_PINES
+
+from services.pine_spawner import PineSpawner
+from services.pine_placer import PinePlacer
+from services.nest_spawner import NestSpawner
+
+TIP_PROFILE = NestPlacementProfile(
+    max_nests=1,
+    min_height_ratio=0.85,
+    max_height_ratio=0.98,
+    min_radial_offset=0.0,
+    max_radial_offset=0.2,
+)
+
+BRANCH_PROFILE = NestPlacementProfile(
+    max_nests=3,
+    min_height_ratio=0.6,
+    max_height_ratio=0.9,
+    min_radial_offset=0.3,
+    max_radial_offset=1.0,
+)
+
+pine_definitions = [
+    PineDefinition(
+        asset_path = p,
+        pine_type = "arrow",
+        placement_profile = TIP_PROFILE,
+        max_nests = 1,
+        height_hint = 10.0,
+    )
+    for p in SMALL_PINES
+] + [
+    PineDefinition(
+        asset_path = p,
+        pine_type = "branchy",
+        placement_profile = BRANCH_PROFILE,
+        max_nests = 5,
+        height_hint = 30.0,
+    )
+    for p in PINES
+]
 
 def build_forest_base_generator(settings: Settings, app):
     camera_strategy = CameraFactory().create(settings.generation.camera_mode)
     writer_strategy = WriterFactory().create(settings.generation.writer_type)
 
-    target_spawner = TargetSpawner(
+    pine_spawner = PineSpawner(pine_definitions = pine_definitions)
+    pine_placer = PinePlacer()
+
+    nest_spawner = NestSpawner(
         nest_assets = TEMP_NESTS,
         semantic_class = settings.dataset.target_class
-    )
-
-    target_placer = RingTargetPlacer(
-        center=(0, 0, 3),
-        radius=2.5,
-        scale=(0.5, 0.5, 0.5),
     )
 
     return DatasetGenerator(
@@ -37,6 +78,7 @@ def build_forest_base_generator(settings: Settings, app):
         writer_strategy = writer_strategy,
         orchestrator_runner = run_orchestrator,
         stage_loader = load_stage,
-        target_spawner = target_spawner,
-        target_placer = target_placer
+        pine_spawner = pine_spawner,
+        pine_placer = pine_placer,
+        nest_spawner = nest_spawner
     )

@@ -1,4 +1,4 @@
-from models.asset_catalog_model import AssetCatalog
+from models.asset_models import AssetCatalog
 import omni.replicator.core as rep
 
 class AssetFactory:
