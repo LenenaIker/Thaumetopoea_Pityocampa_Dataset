@@ -44,7 +44,6 @@ pine_definitions = [
         pine_type = "arrow",
         placement_profile = TIP_PROFILE,
         max_nests = 1,
-        height_hint = 10.0,
     )
     for p in SMALL_PINES
 ] + [
@@ -53,7 +52,6 @@ pine_definitions = [
         pine_type = "branchy",
         placement_profile = BRANCH_PROFILE,
         max_nests = 5,
-        height_hint = 30.0,
     )
     for p in PINES
 ]

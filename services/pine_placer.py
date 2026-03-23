@@ -6,10 +6,10 @@ import omni.replicator.core as rep
 class PinePlacer:
     def __init__(
         self,
-        area_radius=15.0,
-        min_distance=2.5,
-        min_scale=0.01,
-        max_scale=0.015,
+        area_radius=10.0,
+        min_distance=4.0,
+        min_scale=0.8,
+        max_scale=1.3
     ):
         self.area_radius = area_radius
         self.min_distance = min_distance
@@ -30,26 +30,26 @@ class PinePlacer:
                 if self._is_far_enough((x, y), placed_positions):
                     placed_positions.append((x, y))
 
-                    scale = random.uniform(self.min_scale, self.max_scale)
+                    variation_scale = random.uniform(self.min_scale, self.max_scale)
+                    final_scale = pine.definition.unit_correction_scale * variation_scale
 
                     with pine.prim:
                         rep.modify.pose(
                             position=(x, y, 0),
-                            scale=(scale, scale, scale),
+                            scale=(final_scale, final_scale, final_scale),
                         )
 
                     pine.position = (x, y, 0)
-                    pine.scale = (scale, scale, scale)
-                    
-                    
-                    pine.height_hint = pine.definition.height_hint * scale
+                    pine.scale = (final_scale, final_scale, final_scale)
+
+                    base_height = pine.definition.canonical_world_height or 0.0
+                    pine.world_height_hint = base_height * variation_scale
 
                     print(
-                        f"[PINE] asset={pine.definition.asset_path} "
-                        f"pos={(x, y, 0)} scale={scale:.4f} "
-                        f"height_hint_eff={pine.height_hint:.4f}"
+                        f"[PINE PLACE] asset={pine.definition.asset_path} "
+                        f"pos={(x, y, 0)} scale={final_scale:.6f} "
+                        f"world_height={pine.world_height_hint:.3f}"
                     )
-
                     break
 
     def _is_far_enough(self, pos, existing):

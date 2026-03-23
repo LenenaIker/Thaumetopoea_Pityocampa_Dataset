@@ -15,8 +15,9 @@ class PineSpawner:
             definition = random.choice(self.definitions)
 
             prim = rep.create.from_usd(
-                definition.asset_path,
+                usd = definition.asset_path,
                 semantics=[("class", "pine")],
+                scale = (1, 1, 1),
                 count=1,
             )
 
@@ -26,7 +27,7 @@ class PineSpawner:
                     definition = definition,
                     position = (0, 0, 0), # se setea luego
                     scale = (1, 1, 1),
-                    height_hint = definition.height_hint,
+                    world_height_hint = definition.canonical_world_height or 0.0,
                 )
             )
 
