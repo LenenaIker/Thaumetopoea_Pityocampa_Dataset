@@ -19,7 +19,6 @@ from services.nest_spawner import NestSpawner
 
 
 TIP_PROFILE = NestPlacementProfile(
-    max_nests = 1,
     min_height_ratio = 0.85,
     max_height_ratio = 0.98,
     min_radial_offset = 0.0,
@@ -27,7 +26,6 @@ TIP_PROFILE = NestPlacementProfile(
 )
 
 BRANCH_PROFILE = NestPlacementProfile(
-    max_nests = 3,
     min_height_ratio = 0.6,
     max_height_ratio = 0.9,
     min_radial_offset = 0.3,
