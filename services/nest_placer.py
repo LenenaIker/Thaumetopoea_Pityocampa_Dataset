@@ -10,10 +10,6 @@ class NestOnPinePlacer:
     def __init__(
         self,
         placement_profile: NestPlacementProfile,
-        # min_height_ratio=0.6,
-        # max_height_ratio=0.9,
-        # min_radial_offset=0.2,
-        # max_radial_offset=0.8,
         min_scale = 0.15,
         max_scale = 0.35,
     ):
@@ -22,8 +18,17 @@ class NestOnPinePlacer:
         self.max_scale = max_scale
 
     def place_one(self, nest, pine_instance: PineInstance):
+        position, scale = self.sample_pose(pine_instance)
+        self.apply_pose(nest, position, scale)
+
+    def sample_pose(self, pine_instance: PineInstance):
         px, py, pz = pine_instance.position
         tree_height = pine_instance.world_height_hint
+
+        if tree_height is None or tree_height <= 0.0:
+            raise ValueError(
+                f"Invalid pine world_height_hint for nest placement: {tree_height}"
+            )
 
         height = random.uniform(
             self.place_prof.min_height_ratio * tree_height,
@@ -42,8 +47,11 @@ class NestOnPinePlacer:
 
         s = random.uniform(self.min_scale, self.max_scale)
 
+        return (x, y, z), (s, s, s)
+
+    def apply_pose(self, nest, position, scale):
         with nest:
             rep.modify.pose(
-                position=(x, y, z),
-                scale=(s, s, s),
+                position = position,
+                scale = scale,
             )

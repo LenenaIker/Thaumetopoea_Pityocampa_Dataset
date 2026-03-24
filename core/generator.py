@@ -40,7 +40,6 @@ class DatasetGenerator:
         self.pine_spawner = pine_spawner
         self.pine_placer = pine_placer
         self.nest_spawner = nest_spawner
-        # self.nest_placer = nest_placer
 
     def run(self):
         output_dir = Path(self.settings.dataset.output_dir)
@@ -48,14 +47,7 @@ class DatasetGenerator:
         print(f"Output dir: {output_dir}")
 
         stage = self.stage_loader(self.scene_path)
-        resolver = UsdMetricResolver(stage)
-
-        for definition in self.pine_spawner.definitions:
-            asset_mpu, unit_correction_scale, canonical_world_height = resolver.resolve(definition.asset_path)
-            definition.source_mpu = asset_mpu
-            definition.unit_correction_scale = unit_correction_scale
-            definition.canonical_world_height = canonical_world_height
-
+        self._resolve_pine_metrics(stage)
 
         for _ in range(self.settings.dataset.warmup_steps):
             self.app.update()
@@ -81,29 +73,48 @@ class DatasetGenerator:
             # TODO: Si uso rep.create.from_dir(), ¿puedo declarar todos los distractors a la vez?
             # TODO: ¿rep.distribution.choice() puede servirme para seleccionar los pinos donde generar nidos aleatoriamente?
 
-            
-            num_pines = 5 #random.randint(5, 10)
-            pines = self.pine_spawner.spawn(num_pines)
-            self.pine_placer.place(pines)
 
-            # self.app.update()
-            # self._update_pine_heights(pines)
-
-            for pine in pines:
-                profile = pine.definition.placement_profile
-                num_nests = random.randint(1, profile.max_nests)
-
-                placer = NestOnPinePlacer(placement_profile = profile)
-
-                for _ in range(num_nests):
-                    nest = self.nest_spawner.spawn_one()
-                    placer.place_one(nest, pine)
-
+            placed_pines = self._spawn_and_place_pines()
+            self._spawn_and_place_nests(placed_pines)
 
             with rep.trigger.on_frame(num_frames = self.settings.render.num_frames):
                 pass
 
-
         self.orchestrator_runner(self.app)
         self.app.update()
         print("DatasetGenerator: Done.")
+
+    def _resolve_pine_metrics(self, stage):
+        resolver = UsdMetricResolver(stage)
+
+        for definition in self.pine_spawner.definitions:
+            asset_mpu, unit_correction_scale, canonical_world_height = resolver.resolve(
+                definition.asset_path
+            )
+            definition.source_mpu = asset_mpu
+            definition.unit_correction_scale = unit_correction_scale
+            definition.canonical_world_height = canonical_world_height
+
+    def _spawn_and_place_pines(self):
+        num_pines = 5  # random.randint(5, 10)
+        spawned_pines = self.pine_spawner.spawn(num_pines)
+        placed_pines = self.pine_placer.place(spawned_pines)
+
+        print(
+            f"[GENERATOR] Pines spawned={len(spawned_pines)} placed={len(placed_pines)} "
+            f"failed={len(spawned_pines) - len(placed_pines)}"
+        )
+
+        return placed_pines
+
+    def _spawn_and_place_nests(self, pines):
+        for pine in pines:
+            profile = pine.definition.placement_profile
+            max_nests = pine.definition.max_nests
+            num_nests = random.randint(1, max_nests)
+
+            placer = NestOnPinePlacer(placement_profile=profile)
+
+            for _ in range(num_nests):
+                nest = self.nest_spawner.spawn_one()
+                placer.place_one(nest, pine)

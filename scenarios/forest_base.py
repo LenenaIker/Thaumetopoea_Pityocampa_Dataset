@@ -4,38 +4,34 @@ from core.generator import DatasetGenerator
 from factories.camera_factory import CameraFactory
 from factories.writer_factory import WriterFactory
 
-from services.target_spawner import TargetSpawner
-from services.temp_placers import RingTargetPlacer, DiscreteZonePlacer
-
 from core.orchestrator import run_orchestrator
 from core.stage import load_stage
 
-
 from asset_constants import FOREST_01, TEMP_NESTS
+from asset_constants import PINES, SMALL_PINES
 
 from models.pine_models import PineDefinition
 from models.nest_models import NestPlacementProfile
-
-from asset_constants import PINES, SMALL_PINES
 
 from services.pine_spawner import PineSpawner
 from services.pine_placer import PinePlacer
 from services.nest_spawner import NestSpawner
 
+
 TIP_PROFILE = NestPlacementProfile(
-    max_nests=1,
-    min_height_ratio=0.85,
-    max_height_ratio=0.98,
-    min_radial_offset=0.0,
-    max_radial_offset=0.2,
+    max_nests = 1,
+    min_height_ratio = 0.85,
+    max_height_ratio = 0.98,
+    min_radial_offset = 0.0,
+    max_radial_offset = 0.2,
 )
 
 BRANCH_PROFILE = NestPlacementProfile(
-    max_nests=3,
-    min_height_ratio=0.6,
-    max_height_ratio=0.9,
-    min_radial_offset=0.3,
-    max_radial_offset=1.0,
+    max_nests = 3,
+    min_height_ratio = 0.6,
+    max_height_ratio = 0.9,
+    min_radial_offset = 0.3,
+    max_radial_offset = 1.0,
 )
 
 pine_definitions = [
@@ -55,6 +51,7 @@ pine_definitions = [
     )
     for p in PINES
 ]
+
 
 def build_forest_base_generator(settings: Settings, app):
     camera_strategy = CameraFactory().create(settings.generation.camera_mode)
