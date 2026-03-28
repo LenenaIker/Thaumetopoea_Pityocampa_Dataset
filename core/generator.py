@@ -96,7 +96,7 @@ class DatasetGenerator:
             definition.canonical_world_height = canonical_world_height
 
     def _spawn_and_place_pines(self):
-        num_pines = 5  # random.randint(5, 10)
+        num_pines = random.randint(5, 12)
         spawned_pines = self.pine_spawner.spawn(num_pines)
         placed_pines = self.pine_placer.place(spawned_pines)
 
@@ -111,10 +111,12 @@ class DatasetGenerator:
         for pine in pines:
             profile = pine.definition.placement_profile
             max_nests = pine.definition.max_nests
-            num_nests = random.randint(1, max_nests)
 
-            placer = NestOnPinePlacer(placement_profile=profile)
+            if random.choice([True, False]): # Add nests to this tree? 50%
+                num_nests = random.randint(1, max_nests)
 
-            for _ in range(num_nests):
-                nest = self.nest_spawner.spawn_one()
-                placer.place_one(nest, pine)
+                placer = NestOnPinePlacer(placement_profile=profile)
+
+                for _ in range(num_nests):
+                    nest = self.nest_spawner.spawn_one()
+                    placer.place_one(nest, pine)

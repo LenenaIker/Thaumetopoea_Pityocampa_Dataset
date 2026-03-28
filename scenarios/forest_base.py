@@ -7,7 +7,7 @@ from factories.writer_factory import WriterFactory
 from core.orchestrator import run_orchestrator
 from core.stage import load_stage
 
-from asset_constants import FOREST_01, TEMP_NESTS
+from asset_constants import FOREST_01, TEMP_NESTS, NESTS
 from asset_constants import PINES, SMALL_PINES
 
 from models.pine_models import PineDefinition
@@ -59,7 +59,7 @@ def build_forest_base_generator(settings: Settings, app):
     pine_placer = PinePlacer()
 
     nest_spawner = NestSpawner(
-        nest_assets = TEMP_NESTS,
+        nest_assets = NESTS,
         semantic_class = settings.dataset.target_class
     )
 

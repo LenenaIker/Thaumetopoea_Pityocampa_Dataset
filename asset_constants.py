@@ -7,6 +7,7 @@ SCENES_DIR = ASSETS_DIR / "scenes"
 
 
 FOREST_01 = str((SCENES_DIR / "forest_01.usd").resolve())
+NEST_01 = str((ASSETS_DIR / "Nest.usd").resolve())
 
 
 PINES = [
@@ -49,7 +50,9 @@ OTHER_PLUS_6M_TREES = [
     "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Vegetation/Trees/White_Ash.usd"
 ]
 
-NESTS = []
+NESTS = [
+    NEST_01
+]
 TEMP_NESTS = [
     "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/5.1/Isaac/Props/Shapes/sphere.usd",
     # "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/ArchVis/Residential/Decor/Sculptures/SpeakNoEvil_Skull.usd",
