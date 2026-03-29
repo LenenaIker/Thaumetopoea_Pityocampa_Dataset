@@ -38,6 +38,18 @@ class BasicRgbBboxWriterStrategy(WriterStrategy):
         )
         return writer
 
+class BasicRgbBboxSegWriterStrategy(WriterStrategy):
+    def initialize(self, output_dir: str):
+        writer = rep.WriterRegistry.get("BasicWriter")
+        writer.initialize(
+            output_dir=output_dir,
+            rgb=True,
+            bounding_box_2d_tight=True,
+            semantic_segmentation=True,
+            image_output_format="png",
+        )
+        return writer
+
 class DebugBboxVisualizationWriterStrategy(WriterStrategy):
     def initialize(self, output_dir: str):
         writer = rep.WriterRegistry.get("DataVisualizationWriter")

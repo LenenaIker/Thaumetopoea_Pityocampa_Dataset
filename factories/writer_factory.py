@@ -3,6 +3,7 @@ from strategies.writer_strategy import (
     CocoWriterStrategy,
     BasicRgbWriterStrategy,
     BasicRgbBboxWriterStrategy,
+    BasicRgbBboxSegWriterStrategy,
     NullWriterStrategy,
     DebugBboxVisualizationWriterStrategy
 )
@@ -12,11 +13,11 @@ class WriterFactory:
     _registry = {
         "basic": BasicRgbWriterStrategy,
         "basic_bbox": BasicRgbBboxWriterStrategy,
+        "basic_seg": BasicRgbBboxSegWriterStrategy,
         "debug_bbox": DebugBboxVisualizationWriterStrategy,
         "coco": CocoWriterStrategy,
         "kitti": KittiWriterStrategy,
         "none": NullWriterStrategy,
-
     }
     
     def create(self, mode: str):

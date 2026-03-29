@@ -6,6 +6,7 @@ from strategies.writer_strategy import WriterStrategy
 from services.nest_placer import NestOnPinePlacer
 from services.camera_randomizer import CameraRandomizer
 from core.usd_metrics import UsdMetricResolver
+from models.nest_models import NestInstance
 
 import random
 import omni.replicator.core as rep # pyright: ignore[reportMissingImports]
@@ -26,7 +27,6 @@ class DatasetGenerator:
         pine_spawner,
         pine_placer,
         nest_spawner
-        # nest_placer
     ):
         self.app = app
         self.settings = settings
@@ -41,6 +41,9 @@ class DatasetGenerator:
         self.pine_spawner = pine_spawner
         self.pine_placer = pine_placer
         self.nest_spawner = nest_spawner
+
+        self.nest_targets: list[NestInstance] = []
+
 
     def run(self):
         output_dir = Path(self.settings.dataset.output_dir)
@@ -120,9 +123,16 @@ class DatasetGenerator:
 
                 for _ in range(num_nests):
                     nest = self.nest_spawner.spawn_one()
-                    placer.place_one(nest, pine)
+                    position, scale = placer.place_one(nest, pine)
+                    self.nest_targets.append(NestInstance(
+                        prim = nest,
+                        position = position,
+                        scale = scale,
+                        pine_position = pine.position
+                    ))
+
     
-    def _register_camera_behavior(self, camera):
+    def _register_camera_behavior(self, camera, focus_prob = 0.7):
         camera_mode = self.settings.generation.camera_mode
 
         if camera_mode == "fixed":
@@ -130,7 +140,16 @@ class DatasetGenerator:
 
         if camera_mode == "random":
             randomizer = CameraRandomizer(settings = self.settings.generation.camera_randomization)
-            randomizer.apply(camera)
+            
+            if self.nest_targets and random.random() < focus_prob:
+                target = random.choice(self.nest_targets)
+                randomizer.apply_target_biased(
+                    camera = camera,
+                    target_position = target.position,
+                )
+            else:
+                randomizer.apply(camera)
+
             return
 
         raise ValueError(f"Unsupported camera_mode: {camera_mode}")

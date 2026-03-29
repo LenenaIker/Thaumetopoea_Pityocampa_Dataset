@@ -10,7 +10,7 @@ class NestOnPinePlacer:
     def __init__(
         self,
         placement_profile: NestPlacementProfile,
-        min_scale = 0.2,
+        min_scale = 0.3,
         max_scale = 0.5,
     ):
         self.place_prof = placement_profile
@@ -20,6 +20,7 @@ class NestOnPinePlacer:
     def place_one(self, nest, pine_instance: PineInstance):
         position, scale = self.sample_pose(pine_instance)
         self.apply_pose(nest, position, scale)
+        return position, scale
 
     def sample_pose(self, pine_instance: PineInstance):
         px, py, pz = pine_instance.position
