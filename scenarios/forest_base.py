@@ -52,11 +52,17 @@ pine_definitions = [
 
 
 def build_forest_base_generator(settings: Settings, app):
-    camera_strategy = CameraFactory().create(settings.generation.camera_mode)
+    camera_strategy = CameraFactory().create("fixed")
     writer_strategy = WriterFactory().create(settings.generation.writer_type)
 
     pine_spawner = PineSpawner(pine_definitions = pine_definitions)
-    pine_placer = PinePlacer()
+    pine_placer = PinePlacer(
+        area_radius = 50,
+        min_distance = 3,
+        min_scale = 0.5,
+        max_scale = 1.5,
+        max_attempts = 20
+    )
 
     nest_spawner = NestSpawner(
         nest_assets = NESTS,

@@ -27,10 +27,20 @@ class DatasetSettings:
     max_targets_per_frame: int = 5
 
 @dataclass
+class CameraRandomizationSettings:
+    position_min: tuple[float, float, float] = (-60.0, -60.0, 4.0) # Forest_01: 150x150 --> limit = +-75 --> + trees --> 60
+    position_max: tuple[float, float, float] = (60.0, 60.0, 40.0)
+    look_at_min: tuple[float, float, float] = (-30.0, -30.0, 0.0)
+    look_at_max: tuple[float, float, float] = (30.0, 30.0, 20.0)
+    min_height: float = 4.0
+
+
+@dataclass
 class GenerationSettings:
     distractor_type: str = "forest"
     writer_type: str = "none"
     camera_mode: str = "fixed"
+    camera_randomization: CameraRandomizationSettings = field(default_factory = CameraRandomizationSettings)
 
 
 @dataclass

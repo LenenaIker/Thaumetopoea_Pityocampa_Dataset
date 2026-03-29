@@ -4,6 +4,7 @@ from strategies.camera_strategy import CameraStrategy
 from strategies.writer_strategy import WriterStrategy
 
 from services.nest_placer import NestOnPinePlacer
+from services.camera_randomizer import CameraRandomizer
 from core.usd_metrics import UsdMetricResolver
 
 import random
@@ -78,7 +79,7 @@ class DatasetGenerator:
             self._spawn_and_place_nests(placed_pines)
 
             with rep.trigger.on_frame(num_frames = self.settings.render.num_frames):
-                pass
+                self._register_camera_behavior(camera)
 
         self.orchestrator_runner(self.app)
         self.app.update()
@@ -96,7 +97,7 @@ class DatasetGenerator:
             definition.canonical_world_height = canonical_world_height
 
     def _spawn_and_place_pines(self):
-        num_pines = random.randint(7, 20)
+        num_pines = random.randint(20, 50)
         spawned_pines = self.pine_spawner.spawn(num_pines)
         placed_pines = self.pine_placer.place(spawned_pines)
 
@@ -120,3 +121,16 @@ class DatasetGenerator:
                 for _ in range(num_nests):
                     nest = self.nest_spawner.spawn_one()
                     placer.place_one(nest, pine)
+    
+    def _register_camera_behavior(self, camera):
+        camera_mode = self.settings.generation.camera_mode
+
+        if camera_mode == "fixed":
+            return
+
+        if camera_mode == "random":
+            randomizer = CameraRandomizer(settings = self.settings.generation.camera_randomization)
+            randomizer.apply(camera)
+            return
+
+        raise ValueError(f"Unsupported camera_mode: {camera_mode}")

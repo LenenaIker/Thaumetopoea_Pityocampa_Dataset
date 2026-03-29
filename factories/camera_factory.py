@@ -1,14 +1,14 @@
 from strategies.camera_strategy import (
     FixedCameraStrategy,
-    DroneCameraStrategy,
-    RandomCameraStrategy,
+    # DroneCameraStrategy,
+    # RandomCameraStrategy,
 )
 
 class CameraFactory:
     _registry = {
         "fixed": FixedCameraStrategy,
-        "random": RandomCameraStrategy,
-        "drone": DroneCameraStrategy,
+        # "random": RandomCameraStrategy,
+        # "drone": DroneCameraStrategy,
     }
 
     def create(self, mode: str):
