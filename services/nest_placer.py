@@ -1,6 +1,6 @@
 import random
 import math
-import omni.replicator.core as rep
+import omni.replicator.core as rep # pyright: ignore[reportMissingImports]
 
 from models.pine_models import PineInstance
 from models.nest_models import NestPlacementProfile
@@ -10,8 +10,8 @@ class NestOnPinePlacer:
     def __init__(
         self,
         placement_profile: NestPlacementProfile,
-        min_scale = 0.15,
-        max_scale = 0.35,
+        min_scale = 0.2,
+        max_scale = 0.5,
     ):
         self.place_prof = placement_profile
         self.min_scale = min_scale

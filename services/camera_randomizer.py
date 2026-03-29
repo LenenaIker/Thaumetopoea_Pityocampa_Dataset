@@ -1,4 +1,4 @@
-import omni.replicator.core as rep
+import omni.replicator.core as rep # pyright: ignore[reportMissingImports]
 
 from config.settings import CameraRandomizationSettings
 

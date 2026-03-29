@@ -8,7 +8,7 @@ from services.camera_randomizer import CameraRandomizer
 from core.usd_metrics import UsdMetricResolver
 
 import random
-import omni.replicator.core as rep
+import omni.replicator.core as rep # pyright: ignore[reportMissingImports]
 from pathlib import Path
 
 

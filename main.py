@@ -1,5 +1,5 @@
 
-from omni.isaac.kit import SimulationApp
+from omni.isaac.kit import SimulationApp # pyright: ignore[reportMissingImports]
 
 from config.cli import parse_args
 from config.settings import build_settings

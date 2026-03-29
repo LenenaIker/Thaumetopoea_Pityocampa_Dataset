@@ -1,4 +1,4 @@
-from pxr import Usd, UsdGeom, Gf
+from pxr import Usd, UsdGeom, Gf # pyright: ignore[reportMissingImports]
 
 
 class UsdMetricResolver:

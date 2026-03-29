@@ -1,5 +1,5 @@
 import random
-import omni.replicator.core as rep
+import omni.replicator.core as rep # pyright: ignore[reportMissingImports]
 
 from models.pine_models import PineDefinition, PineInstance
 

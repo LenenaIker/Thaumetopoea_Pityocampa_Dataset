@@ -1,5 +1,5 @@
 from models.asset_models import AssetCatalog
-import omni.replicator.core as rep
+import omni.replicator.core as rep # pyright: ignore[reportMissingImports]
 
 class AssetFactory:
     def __init__(self, catalog: AssetCatalog):

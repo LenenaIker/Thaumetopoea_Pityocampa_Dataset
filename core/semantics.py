@@ -1,4 +1,4 @@
-from pxr import Semantics
+from pxr import Semantics # pyright: ignore[reportMissingImports]
 
 
 def update_semantics(stage, keep_semantics=None):
