@@ -89,7 +89,7 @@ class UsdMetricResolver:
             return 0.0
 
         height = float(max_pt[2] - min_pt[2])
-        if height <= 0.0:
+        if height <= 0.0 or abs(height) > 1e4 :
             return 0.0
 
         return height

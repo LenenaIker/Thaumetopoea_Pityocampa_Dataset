@@ -30,6 +30,10 @@ class PinePlacer:
                     f"[PINE PLACE][WARN] Could not place asset={pine.definition.asset_path} "
                     f"after {self.max_attempts} attempts"
                 )
+
+                with pine.prim: # FIXME: Solución simple pero incorrecta. En lugar de crear muchos pinos y luego ocultar los que no pueda colocar, debería de decirdir posiciones primero y luego spawnear dependiendo de las posiciones disponibles.
+                    rep.modify.visibility(False)
+                
                 continue
 
             x, y, z = sampled_position

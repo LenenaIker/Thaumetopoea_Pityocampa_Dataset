@@ -96,7 +96,7 @@ class DatasetGenerator:
             definition.canonical_world_height = canonical_world_height
 
     def _spawn_and_place_pines(self):
-        num_pines = random.randint(5, 12)
+        num_pines = random.randint(7, 20)
         spawned_pines = self.pine_spawner.spawn(num_pines)
         placed_pines = self.pine_placer.place(spawned_pines)
 
