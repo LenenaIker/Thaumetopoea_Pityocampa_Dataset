@@ -1,6 +1,9 @@
 # Thaumetopoea_Pityocampa_Dataset
  Synthetic data generator for Thaumetopoea Pityocampa nests
 
+Check https://www.linkedin.com/feed/update/urn:li:activity:7449497057247272962/ or my profile.
+
+
 ``` bash
 
 /opt/isaacsim/isaac-sim-5.1.0-20260318-clean/python.sh \
