@@ -34,7 +34,7 @@ class BasicRgbBboxWriterStrategy(WriterStrategy):
             output_dir=output_dir,
             rgb=True,
             bounding_box_2d_tight=True,
-            image_output_format="png"
+            image_output_format="jpg"
         )
         return writer
 
@@ -46,7 +46,7 @@ class BasicRgbBboxSegWriterStrategy(WriterStrategy):
             rgb=True,
             bounding_box_2d_tight=True,
             semantic_segmentation=True,
-            image_output_format="png",
+            image_output_format="jpg",
         )
         return writer
 

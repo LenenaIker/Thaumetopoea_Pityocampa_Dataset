@@ -55,6 +55,8 @@ def build_forest_base_generator(settings: Settings, app):
     camera_strategy = CameraFactory().create("fixed")
     writer_strategy = WriterFactory().create(settings.generation.writer_type)
 
+    print(f"[WRITER] writer_type={settings.generation.writer_type} strategy={type(writer_strategy).__name__}")
+
     pine_spawner = PineSpawner(pine_definitions = pine_definitions)
     pine_placer = PinePlacer(
         area_radius = 50,

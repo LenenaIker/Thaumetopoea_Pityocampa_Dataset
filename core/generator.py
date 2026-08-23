@@ -136,9 +136,11 @@ class DatasetGenerator:
         camera_mode = self.settings.generation.camera_mode
 
         if camera_mode == "fixed":
+            print("[CAMERA] fixed mode")
             return
 
         if camera_mode == "random":
+            print("[CAMERA] applying random pose")
             randomizer = CameraRandomizer(settings = self.settings.generation.camera_randomization)
             
             if self.nest_targets and random.random() < focus_prob:
